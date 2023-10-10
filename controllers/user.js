@@ -1,9 +1,15 @@
-const { UserModel } = require('../models/modelFactory')
+const { UserModel, CounterModel } = require('../models/modelFactory')
 
 exports.createUser = async (req, res) => {
     try {
         const userModel = new UserModel()
-        const user = await userModel.create(req.body)
+        const counterModel = new CounterModel()
+        const userId = await counterModel.getNextId('Users')
+        const userData = {
+            ...req.body,
+            id: userId
+        }
+        const user = await userModel.create(userData)
         res.status(201).json(user)
     } catch (error) {
         console.error('Error creating user:', error)

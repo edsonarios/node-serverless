@@ -2,8 +2,11 @@ service: scoops-test
 frameworkVersion: '3'
 
 custom:
+  scriptHooks:
+    after:deploy:finalize: ./scripts/initCounter.js
   userName: 'users-table-${sls:stage}'
   roleName: 'roles-table-${sls:stage}'
+  counterName: 'counters-table-${sls:stage}'
 
 provider:
   name: aws
@@ -25,9 +28,11 @@ provider:
           Resource:
             - Fn::GetAtt: [ UsersTable, Arn ]
             - Fn::GetAtt: [ RolesTable, Arn ]
+            - Fn::GetAtt: [ CountersTable, Arn ]
   environment:
     USERS_TABLE: ${self:custom.userName}
     ROLES_TABLE: ${self:custom.roleName}
+    COUNTERS_TABLE: ${self:custom.counterName}
 
 package:
   excludeDevDependencies: true
@@ -66,7 +71,17 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.roleName}
+    CountersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.counterName}
 
 plugins:
-  - serverless-offline
-  - serverless-dynamodb-local
+  - serverless-scriptable-plugin
