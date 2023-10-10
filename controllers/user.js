@@ -14,7 +14,7 @@ exports.createUser = async (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         const userModel = new UserModel()
-        const user = await userModel.findById(req.params.id)
+        const user = await userModel.findById(req.params.userId)
         if (user) {
             res.status(200).json(user)
         } else {

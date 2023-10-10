@@ -1,5 +1,5 @@
 const DB_TYPE = process.env.DATABASE_TYPE || 'dynamo'
-console.log(DB_TYPE)
+
 function getModelGroup () {
     switch (DB_TYPE) {
     case 'dynamo':

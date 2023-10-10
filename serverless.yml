@@ -2,7 +2,8 @@ service: scoops-test
 frameworkVersion: '3'
 
 custom:
-  tableName: 'users-table-${sls:stage}'
+  userName: 'users-table-${sls:stage}'
+  roleName: 'roles-table-${sls:stage}'
 
 provider:
   name: aws
@@ -25,7 +26,8 @@ provider:
             - Fn::GetAtt: [ UsersTable, Arn ]
             - Fn::GetAtt: [ RolesTable, Arn ]
   environment:
-    USERS_TABLE: ${self:custom.tableName}
+    USERS_TABLE: ${self:custom.userName}
+    ROLES_TABLE: ${self:custom.roleName}
 
 package:
   excludeDevDependencies: true
@@ -52,7 +54,7 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:custom.tableName}
+        TableName: ${self:custom.userName}
     RolesTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -63,4 +65,8 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-        TableName: roles-table-${sls:stage}
+        TableName: ${self:custom.roleName}
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
