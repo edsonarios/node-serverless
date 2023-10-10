@@ -1,5 +1,4 @@
 @URL=https://elclc20b2e.execute-api.us-west-2.amazonaws.com/users
-# @URL=http://localhost:3000/users
 
 ### GET users
 GET {{URL}}
