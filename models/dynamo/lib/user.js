@@ -1,11 +1,30 @@
 const dynamoose = require('dynamoose')
 
 const UserSchema = new dynamoose.Schema({
-    userId: {
+    id: {
         type: String,
         hashKey: true
     },
-    name: String
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        index: {
+            global: true,
+            name: 'EmailIndex'
+        }
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    roleId: {
+        type: String,
+        required: true
+    }
 })
 
 const UserLib = dynamoose.model(process.env.USERS_TABLE, UserSchema)

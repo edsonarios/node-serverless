@@ -1,4 +1,4 @@
-@URL=https://elclc20b2e.execute-api.us-west-2.amazonaws.com/users
+@URL=https://35aljrgifl.execute-api.us-west-2.amazonaws.com/users
 
 ### GET users
 GET {{URL}}
@@ -8,9 +8,13 @@ POST {{URL}}
 content-type: application/json
 
 {
-    "userId": "2",
-    "name": "newUser2@gmail.com"
+  "id": "user1",
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "roleId": "admin"
 }
+
 
 ### get user by id
 GET {{URL}}/1
