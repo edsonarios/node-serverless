@@ -8,8 +8,8 @@ POST {{URL}}
 content-type: application/json
 
 {
-    "userId": "1",
-    "name": "newUser@gmail.com"
+    "userId": "2",
+    "name": "newUser2@gmail.com"
 }
 
 ### get user by id

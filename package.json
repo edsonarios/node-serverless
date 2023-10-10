@@ -1,12 +1,15 @@
 {
   "scripts": {
     "dev": "serverless offline start",
-    "start": "serverless deploy --verbose"
+    "deploy:prod": "rm -rf node_modules && npm install --production && serverless deploy",
+    "deploy": "serverless deploy"
+
   },
   "name": "scoops-test",
   "version": "1.0.0",
   "description": "",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "dynamoose": "^3.2.1",
     "express": "^4.18.2",
     "serverless-http": "^3.1.1"

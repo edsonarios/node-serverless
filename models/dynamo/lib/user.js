@@ -8,6 +8,6 @@ const UserSchema = new dynamoose.Schema({
     name: String
 })
 
-const UserModel = dynamoose.model(process.env.USERS_TABLE, UserSchema)
+const UserLib = dynamoose.model(process.env.USERS_TABLE, UserSchema)
 
-module.exports = UserModel
+module.exports = UserLib

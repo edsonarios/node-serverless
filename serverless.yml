@@ -13,6 +13,8 @@ provider:
       statements:
         - Effect: Allow
           Action:
+            - dynamodb:CreateTable
+            - dynamodb:DescribeTable
             - dynamodb:Query
             - dynamodb:Scan
             - dynamodb:GetItem
@@ -24,9 +26,16 @@ provider:
   environment:
     USERS_TABLE: ${self:custom.tableName}
 
+package:
+  excludeDevDependencies: true
+  exclude:
+    - .dynamodb/**
+
 functions:
   api:
     handler: index.handler
+    environment:
+      DATABASE_TYPE: dynamo
     events:
       - httpApi: '*'
 

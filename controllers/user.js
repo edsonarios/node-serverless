@@ -1,8 +1,15 @@
-const UserModel = require('../models/dynamo/user')
+const { UserModel } = require('../models/modelFactory')
+
+exports.createUser = async (req, res) => {
+    const userInstance = new UserModel()
+    const user = await userInstance.create(req.body)
+    res.json(user)
+}
 
 exports.getUser = async (req, res) => {
     try {
-        const user = await UserModel.get(req.params.userId)
+        const userInstance = new UserModel()
+        const user = await userInstance.findById(req.params.userId)
         if (user) {
             res.json(user)
         } else {
@@ -12,4 +19,10 @@ exports.getUser = async (req, res) => {
         console.log(error)
         res.status(500).json({ error: 'Could not retrieve user' })
     }
+}
+
+exports.getAllUsers = async (req, res) => {
+    const userModel = new UserModel()
+    const users = await userModel.findAll()
+    res.json(users)
 }
