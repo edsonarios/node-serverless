@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const UserLib = require('../lib/user')
 const CounterModel = require('./counter')
 
@@ -5,8 +6,14 @@ class UserModel {
     async create (data) {
         const counterModel = new CounterModel()
         const newUserId = await counterModel.getNextId('Users')
+
+        // Its possible manage this date by process.env.SALT_ROUNDS || 10
+        const saltRounds = 10
+        const hashedPassword = await bcrypt.hash(data.password, saltRounds)
+
         const userData = {
             ...data,
+            password: hashedPassword,
             id: newUserId
         }
         const user = new UserLib(userData)
