@@ -99,3 +99,5 @@ resources:
 
 plugins:
   - serverless-scriptable-plugin
+  - serverless-offline
+  - serverless-dynamodb-local
