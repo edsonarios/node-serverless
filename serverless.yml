@@ -42,6 +42,7 @@ package:
 functions:
   api:
     handler: index.handler
+    timeout: 30
     environment:
       DATABASE_TYPE: dynamo
     events:
@@ -55,11 +56,20 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: email
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.userName}
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
     RolesTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -85,3 +95,5 @@ resources:
 
 plugins:
   - serverless-scriptable-plugin
+  - serverless-offline
+  - serverless-dynamodb-local

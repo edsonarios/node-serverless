@@ -14,7 +14,8 @@ const UserSchema = new dynamoose.Schema({
         required: true,
         index: {
             global: true,
-            name: 'EmailIndex'
+            name: 'EmailIndex',
+            project: true
         }
     },
     password: {
