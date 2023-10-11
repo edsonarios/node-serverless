@@ -22,7 +22,7 @@ exports.createRole = async (req, res) => {
     }
 }
 
-exports.getRole = async (req, res) => {
+exports.getRoleById = async (req, res) => {
     try {
         const roleModel = new RoleModel()
         const role = await roleModel.findById(req.params.roleId)

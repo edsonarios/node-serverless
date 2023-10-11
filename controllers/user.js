@@ -23,7 +23,7 @@ exports.createUser = async (req, res) => {
     }
 }
 
-exports.getUser = async (req, res) => {
+exports.getUserById = async (req, res) => {
     try {
         const userModel = new UserModel()
         const user = await userModel.findById(req.params.userId)
