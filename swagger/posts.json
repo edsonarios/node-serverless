@@ -1,0 +1,87 @@
+{
+    "/posts": {
+        "get": {
+            "tags": [
+                "Posts"
+            ],
+            "summary": "Get all posts",
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "content": {
+                                            "type": "string"
+                                        },
+                                        "userId": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/posts/{postId}": {
+        "get": {
+            "tags": [
+                "Posts"
+            ],
+            "summary": "Get post by ID",
+            "parameters": [
+                {
+                    "name": "postId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the post to get",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "userId": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Post Not Found"
+                }
+            }
+        }
+    }
+}

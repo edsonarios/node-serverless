@@ -1,0 +1,51 @@
+{
+    "post": {
+        "tags": [
+            "Authentication"
+        ],
+        "security": [],
+        "summary": "Init session",
+        "description": "Authenticates a user and returns a token.",
+        "responses": {
+            "200": {
+                "description": "Successful authentication",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Invalid email or password"
+            }
+        },
+        "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "email",
+                            "password"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

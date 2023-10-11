@@ -3,7 +3,7 @@ const expect = chai.expect
 const sinon = require('sinon')
 const supertest = require('supertest')
 const app = require('../app')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const { UserModel, RoleModel } = require('../models/dynamo/index.js')
 
 describe('POST /login', () => {

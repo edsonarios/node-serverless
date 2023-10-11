@@ -1,0 +1,160 @@
+{
+    "/me": {
+        "get": {
+            "tags": [
+                "Me"
+            ],
+            "summary": "Get logged in user information",
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "roleId": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/me/posts": {
+        "get": {
+            "tags": [
+                "Me"
+            ],
+            "summary": "Get all posts by the logged in user",
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "content": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/me/posts/{postId}": {
+        "get": {
+            "tags": [
+                "Me"
+            ],
+            "summary": "Get a specific post by the logged in user",
+            "parameters": [
+                {
+                    "name": "postId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the post to get",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Post Not Found"
+                }
+            }
+        }
+    },
+    "/me/posts/{postId}/comments": {
+        "get": {
+            "tags": [
+                "Me"
+            ],
+            "summary": "Get comments from a specific post by the logged in user",
+            "parameters": [
+                {
+                    "name": "postId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the post",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "content": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Post Not Found"
+                }
+            }
+        }
+    }
+}

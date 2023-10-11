@@ -1,12 +1,12 @@
 const express = require('express')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const { generateToken } = require('../utils/jwt')
 const { UserModel } = require('../models/modelFactory')
 const { RoleModel } = require('../models/dynamo')
 
 const router = express.Router()
 
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
     const { email, password } = req.body
     const userModel = new UserModel()
     const roleModel = new RoleModel()

@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const UserLib = require('../lib/user')
 const CounterModel = require('./counter')
 

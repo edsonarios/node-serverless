@@ -1,0 +1,87 @@
+{
+    "/comments": {
+        "get": {
+            "tags": [
+                "Comments"
+            ],
+            "summary": "Get all comments",
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "content": {
+                                            "type": "string"
+                                        },
+                                        "postId": {
+                                            "type": "string"
+                                        },
+                                        "userId": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/comments/{commentId}": {
+        "get": {
+            "tags": [
+                "Comments"
+            ],
+            "summary": "Get comment by ID",
+            "parameters": [
+                {
+                    "name": "commentId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the comment to get",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "postId": {
+                                        "type": "string"
+                                    },
+                                    "userId": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Comment Not Found"
+                }
+            }
+        }
+    }
+}

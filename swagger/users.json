@@ -1,0 +1,130 @@
+{
+    "/users": {
+        "get": {
+            "tags": [
+                "Users"
+            ],
+            "summary": "Get all users",
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "roleId": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "post": {
+            "tags": [
+                "Users"
+            ],
+            "summary": "Create new user",
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "roleId": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "email",
+                                "password",
+                                "roleId"
+                            ]
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201": {
+                    "description": "User created successfully"
+                },
+                "400": {
+                    "description": "Bad Request"
+                }
+            }
+        }
+    },
+    "/users/{userId}": {
+        "get": {
+            "tags": [
+                "Users"
+            ],
+            "summary": "Get user by ID",
+            "parameters": [
+                {
+                    "name": "userId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID user",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Successful operation",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "roleId": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "User Not Found"
+                }
+            }
+        }
+    }
+}

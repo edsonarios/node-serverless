@@ -1,0 +1,105 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "API",
+        "description": "API from technical test",
+        "termsOfService": "",
+        "contact": {
+            "name": "edsonarios",
+            "url": "",
+            "email": "edsonarios@gmail.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://9anke0cyv4.execute-api.us-west-2.amazonaws.com",
+            "description": "Production"
+        },
+        {
+            "url": "http://localhost:3000",
+            "description": "Local"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Endpoints for user authentication."
+        },
+        {
+            "name": "Users",
+            "description": "Endpoints to manage users."
+        },
+        {
+            "name": "Roles",
+            "description": "Endpoints to manage roles."
+        },
+        {
+            "name": "Posts",
+            "description": "Endpoints to manage posts."
+        },
+        {
+            "name": "Comments",
+            "description": "Endpoints to manage comments."
+        },
+        {
+            "name": "Me",
+            "description": "Endpoints to manage me."
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "BearerToken": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerToken": []
+        }
+    ],
+    "paths": {
+        "/login": {
+            "$ref": "./login.json"
+        },
+        "/users": {
+            "$ref": "./users.json#/~1users"
+        },
+        "/users/{userId}": {
+            "$ref": "./users.json#/~1users~1{userId}"
+        },
+        "/roles": {
+            "$ref": "./roles.json#/~1roles"
+        },
+        "/roles/{roleId}": {
+            "$ref": "./roles.json#/~1roles~1{roleId}"
+        },
+        "/posts": {
+            "$ref": "./posts.json#/~1posts"
+        },
+        "/posts/{postId}": {
+            "$ref": "./posts.json#/~1posts~1{postId}"
+        },
+        "/comments": {
+            "$ref": "./comments.json#/~1comments"
+        },
+        "/comments/{commentId}": {
+            "$ref": "./comments.json#/~1comments~1{commentId}"
+        },
+        "/me": {
+            "$ref": "./me.json#/~1me"
+        },
+        "/me/posts": {
+            "$ref": "./me.json#/~1me~1posts"
+        },
+        "/me/posts/{postId}": {
+            "$ref": "./me.json#/~1me~1posts~1{postId}"
+        },
+        "/me/posts/{postId}/comments": {
+            "$ref": "./me.json#/~1me~1posts~1{postId}~1comments"
+        }
+    }
+}
