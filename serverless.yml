@@ -27,6 +27,10 @@ provider:
             - dynamodb:DeleteItem
           Resource:
             - Fn::GetAtt: [ UsersTable, Arn ]
+            - Fn::Join:
+              - '/'
+              - - Fn::GetAtt: [ UsersTable, Arn ]
+                - 'index/EmailIndex'
             - Fn::GetAtt: [ RolesTable, Arn ]
             - Fn::GetAtt: [ CountersTable, Arn ]
   environment:
@@ -95,5 +99,3 @@ resources:
 
 plugins:
   - serverless-scriptable-plugin
-  - serverless-offline
-  - serverless-dynamodb-local
