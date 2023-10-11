@@ -1,6 +1,11 @@
 const { RoleModel, CounterModel } = require('../models/modelFactory')
 
 exports.createRole = async (req, res) => {
+    const allowedRoles = ['personal', 'admin']
+    if (!allowedRoles.includes(req.body.name)) {
+        return res.status(400).json({ error: 'Invalid role name' })
+    }
+
     try {
         const roleModel = new RoleModel()
         const counterModel = new CounterModel()
