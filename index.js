@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use('/users', userRoutes)
 app.use('/roles', roleRoutes)
 app.use('/posts', postRoutes)
