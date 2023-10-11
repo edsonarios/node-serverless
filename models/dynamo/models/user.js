@@ -1,8 +1,15 @@
 const UserLib = require('../lib/user')
+const CounterModel = require('./counter')
 
 class UserModel {
     async create (data) {
-        const user = new UserLib(data)
+        const counterModel = new CounterModel()
+        const newUserId = await counterModel.getNextId('Users')
+        const userData = {
+            ...data,
+            id: newUserId
+        }
+        const user = new UserLib(userData)
         await user.save()
         return user
     }

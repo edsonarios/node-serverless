@@ -2,8 +2,6 @@ service: scoops-test
 frameworkVersion: '3'
 
 custom:
-  scriptHooks:
-    after:deploy:finalize: ./scripts/initCounter.js
   userName: 'users-table-${sls:stage}'
   roleName: 'roles-table-${sls:stage}'
   counterName: 'counters-table-${sls:stage}'
@@ -99,3 +97,5 @@ resources:
 
 plugins:
   - serverless-scriptable-plugin
+  - serverless-offline
+  - serverless-dynamodb-local

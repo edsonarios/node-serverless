@@ -1,8 +1,15 @@
 const RoleLib = require('../lib/role')
+const CounterModel = require('./counter')
 
 class RoleModel {
     async create (data) {
-        const role = new RoleLib(data)
+        const counterModel = new CounterModel()
+        const newRoleId = await counterModel.getNextId('Roles')
+        const roleData = {
+            ...data,
+            id: newRoleId
+        }
+        const role = new RoleLib(roleData)
         await role.save()
         return role
     }

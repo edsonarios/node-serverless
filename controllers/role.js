@@ -1,4 +1,4 @@
-const { RoleModel, CounterModel } = require('../models/modelFactory')
+const { RoleModel } = require('../models/modelFactory')
 
 exports.createRole = async (req, res) => {
     const allowedRoles = ['personal', 'admin']
@@ -8,13 +8,7 @@ exports.createRole = async (req, res) => {
 
     try {
         const roleModel = new RoleModel()
-        const counterModel = new CounterModel()
-        const roleId = await counterModel.getNextId('Roles')
-        const roleData = {
-            ...req.body,
-            id: roleId
-        }
-        const role = await roleModel.create(roleData)
+        const role = await roleModel.create(req.body)
         res.status(201).json(role)
     } catch (error) {
         console.error('Error creating role:', error)

@@ -1,21 +1,14 @@
-const { UserModel, CounterModel } = require('../models/modelFactory')
+const { UserModel } = require('../models/modelFactory')
 
 exports.createUser = async (req, res) => {
     try {
         const userModel = new UserModel()
-        console.log(req.body.email)
         const existingUser = await userModel.findByEmail(req.body.email)
         if (existingUser) {
             return res.status(400).json({ error: 'User with this email already exists' })
         }
 
-        const counterModel = new CounterModel()
-        const userId = await counterModel.getNextId('Users')
-        const userData = {
-            ...req.body,
-            id: userId
-        }
-        const user = await userModel.create(userData)
+        const user = await userModel.create(req.body)
         res.status(201).json(user)
     } catch (error) {
         console.error('Error creating user:', error)

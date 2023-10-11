@@ -10,7 +10,22 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body
     const userModel = new UserModel()
     const roleModel = new RoleModel()
-    const user = await userModel.findByEmail(email)
+    const users = await userModel.findAll()
+    let user
+    // If no exist any user, create a new user admin with new role
+    if (users.length === 0) {
+        await roleModel.create({
+            name: 'admin'
+        })
+        user = await userModel.create({
+            name: 'New Admin',
+            email,
+            password,
+            roleId: '1'
+        })
+    } else {
+        user = await userModel.findByEmail(email)
+    }
     if (!user) {
         return res.status(400).json({ message: 'Invalid email or password.' })
     }
