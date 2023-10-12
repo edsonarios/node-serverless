@@ -19,15 +19,17 @@ describe('GET /users', () => {
 
     it('should return all users', async () => {
         const mockUsers = [{
+            password: '$2b$10$.hUc',
             id: '123',
-            name: 'John Doe',
             email: 'john@example.com',
+            name: 'John Doe',
             roleId: '1'
         },
         {
+            password: '$2b$10$.hUc',
             id: '124',
-            name: 'Jane Smith',
             email: 'jane@example.com',
+            name: 'Jane Smith',
             roleId: '2'
         }]
 
@@ -50,9 +52,10 @@ describe('GET /users/:userId', () => {
     it('should return user details for valid userId', async () => {
         const mockUserId = '123'
         const mockUser = {
+            password: '$2b$10$.hUc',
             id: mockUserId,
-            name: 'John Doe',
             email: 'john@example.com',
+            name: 'John Doe',
             roleId: '1'
         }
 
@@ -81,10 +84,11 @@ describe('POST /users', () => {
             roleId: '1'
         }
         const mockUserOutput = {
-            id: '123',
             name: 'John Doe',
             email: 'john@example.com',
-            roleId: '1'
+            password: '$2b$10$.hUc',
+            roleId: '1',
+            id: '123'
         }
 
         sinon.stub(UserModel.prototype, 'findByEmail').returns(undefined)

@@ -5,8 +5,9 @@ const app = require('../app')
 const { UserModel, RoleModel } = require('../models/dynamo/index.js')
 const sinon = require('sinon')
 
-const mockLogin = async () => {
-    const mockEmail = 'test@example.com'
+const mockLogin = async (role = 'admin') => {
+    sinon.restore()
+    const mockEmail = role === 'personal' ? 'personal@example.com' : 'admin@example.com'
     const mockPassword = 'testpassword'
 
     const mockUsers = [{
@@ -23,8 +24,9 @@ const mockLogin = async () => {
     }
     const mockRole = {
         id: '1',
-        name: 'admin'
+        name: role
     }
+
     sinon.stub(UserModel.prototype, 'findAll').returns(mockUsers)
     sinon.stub(UserModel.prototype, 'findByEmail').returns(mockUser)
     sinon.stub(RoleModel.prototype, 'findById').returns(mockRole)
