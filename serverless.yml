@@ -97,3 +97,6 @@ resources:
 
 plugins:
   - serverless-scriptable-plugin
+  # Uncomment for local environment and install devDependencies
+  # - serverless-offline
+  # - serverless-dynamodb-local
