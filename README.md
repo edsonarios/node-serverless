@@ -1,139 +1,133 @@
-<!--
-title: 'Serverless Framework Node Express API service backed by DynamoDB on AWS'
-description: 'This template demonstrates how to develop and deploy a simple Node Express API service backed by DynamoDB running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-priority: 1
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# API with Node.js and Serverless with AWS
 
-# Serverless Framework Node Express API on AWS
+An API built in Node.js using the Serverless framework for deployment on AWS. This API integrates with [JSONPlaceholder](https://jsonplaceholder.typicode.com/) and offers custom endpoints, JWT authentication, and role-based authorization.
 
-This template demonstrates how to develop and deploy a simple Node Express API service, backed by DynamoDB database, running on AWS Lambda using the traditional Serverless Framework.
+## Index
 
+- [Description](#description)
+- [Install](#install)
+- [Use](#use)
+- [API Endpoints](#api-endpoints)
+- [Tests](#tests)
+- [Swagger](#swagger)
+- [Para El Revisor](#para-el-revisor) <-----
 
-## Anatomy of the template
+## Description
 
-This template configures a single function, `api`, which is responsible for handling all incoming requests thanks to the `httpApi` event. To learn more about `httpApi` event configuration options, please refer to [httpApi event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). As the event is configured in a way to accept all incoming requests, `express` framework is responsible for routing and handling requests internally. Implementation takes advantage of `serverless-http` package, which allows you to wrap existing `express` applications. To learn more about `serverless-http`, please refer to corresponding [GitHub repository](https://github.com/dougmoscrop/serverless-http). Additionally, it also handles provisioning of a DynamoDB database that is used for storing data about users. The `express` application exposes two endpoints, `POST /users` and `GET /user/{userId}`, which allow to create and retrieve users.
+This project was designed as a solution to a technical challenge that involves:
 
-## Usage
+- Integration with the JSONPlaceholder API.
+- Authentication using JWT (JSON Web Tokens).
+- Role-based authorization with middleware.
+- Use of the `Serverless Framework` for deployment in AWS.
 
-### Deployment
+## Install
 
-Install dependencies with:
+1. **Previous requirements**: Make sure you have Node.js and npm installed.
+2. Clone this repository:
+   ```
+   git clone https://github.com/edsonarios/node-serverless.git
+   ```
+3. Navigate to the project folder and install the dependencies:
+   ```
+   cd node-serverless
+   npm install
+   ```
 
-```
-npm install
-```
+## Use
 
-and then deploy with:
+1. To start the API in development mode:
 
-```
-serverless deploy
-```
+- Download the dynamodb zip file [Link zip file to DynamoDB](#https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) and put in place `.dynamodb`
+  ```
+  npm run dev
+  http://localhost:3000
+  ```
 
-After running deploy, you should see output similar to:
+2. To start the API in production mode:
 
-```bash
-Deploying aws-node-express-dynamodb-api-project to stage dev (us-east-1)
+- Download the AWS CLI for manage the credentials [Link AWS cli](#https://aws.amazon.com/es/cli/)
+- Create user IAM with Access keys `ACCESS_KEY` and `SECRET_KEY`
 
-✔ Service deployed to stack aws-node-express-dynamodb-api-project-dev (196s)
+  ```bash
+  aws configure # set the access and secret key
+  npm deploy:prod
+  ```
 
-endpoint: ANY - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com
-functions:
-  api: aws-node-express-dynamodb-api-project-dev-api (766 kB)
-```
+## API Endpoints
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [`httpApi` event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). Additionally, in current configuration, the DynamoDB table will be removed when running `serverless remove`. To retain the DynamoDB table even after removal of the stack, add `DeletionPolicy: Retain` to its resource definition.
+All endpoints, except the login endpoint, require authentication via JWT. Depending on the user's role, they will have access to different endpoints.
 
-### Invocation
+### **Authentication**
 
-After successful deployment, you can create a new user by calling the corresponding endpoint:
+- **Login** `[POST] /login`: Authenticates a user and returns a JWT token.
 
-```bash
-curl --request POST 'https://xxxxxx.execute-api.us-east-1.amazonaws.com/users' --header 'Content-Type: application/json' --data-raw '{"name": "John", "userId": "someUserId"}'
-```
+### **Users**
 
-Which should result in the following response:
+- **List Users** `[GET] /users`: Gets a list of all users. Requires `admin` role.
+- **Get User** `[GET] /users/{userId}`: Gets a specific user by their ID. Requires `admin` role.
+- **Create User** `[POST] /users`: Create a new user. Requires `admin` role.
 
-```bash
-{"userId":"someUserId","name":"John"}
-```
+### **Roles**
 
-You can later retrieve the user by `userId` by calling the following endpoint:
+- **List Roles** `[GET] /roles`: Gets a list of all roles. Requires `admin` role.
+- **Get Role** `[GET] /roles/{roleId}`: Gets a specific role by its ID. Requires `admin` role.
+- **Create Role** `[POST] /roles`: Create a new role. Requires `admin` role.
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/users/someUserId
-```
+### **Posts**
 
-Which should result in the following response:
+- **List Posts** `[GET] /posts`: Gets a list of all posts. Requires `admin` role.
+- **Get Post** `[GET] /posts/{postId}`: Gets a specific post by its ID. Requires `admin` role.
 
-```bash
-{"userId":"someUserId","name":"John"}
-```
+### **Comments**
 
-If you try to retrieve user that does not exist, you should receive the following response:
+- **List Comments** `[GET] /comments`: Gets a list of all comments. Requires `admin` role.
+- **Get Comment** `[GET] /comments/{commentId}`: Gets a specific comment by its ID. Requires `admin` role.
 
-```bash
-{"error":"Could not find user with provided \"userId\""}
-```
+### **Personal Information (me)**
 
-### Local development
+- **Get My Data** `[GET] /me`: Obtains the information of the authenticated user. Requires `personal` role.
+- **My Posts** `[GET] /me/posts`: Gets the authenticated user's posts. Requires `personal` role.
+- **One of My Posts** `[GET] /me/posts/{postId}`: Gets a specific post from the authenticated user. Requires `personal` role.
+- **Comments on one of My Posts** `[GET] /me/posts/{postId}/comments`: Gets the comments on a specific post from the authenticated user. Requires `personal` role.
 
-It is also possible to emulate DynamoDB, API Gateway and Lambda locally using the `serverless-dynamodb-local` and `serverless-offline` plugins. In order to do that, run:
+## Tests
 
-```bash
-serverless plugin install -n serverless-dynamodb-local
-serverless plugin install -n serverless-offline
-```
-
-It will add both plugins to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`. Make sure that `serverless-offline` is listed as last plugin in `plugins` section:
-
-```
-plugins:
-  - serverless-dynamodb-local
-  - serverless-offline
-```
-
-You should also add the following config to `custom` section in `serverless.yml`:
+To run the tests:
 
 ```
-custom:
-  (...)
-  dynamodb:
-    start:
-      migrate: true
-    stages:
-      - dev
+npm test
 ```
 
-Additionally, we need to reconfigure `AWS.DynamoDB.DocumentClient` to connect to our local instance of DynamoDB. We can take advantage of `IS_OFFLINE` environment variable set by `serverless-offline` plugin and replace:
+The tests cover the endpoints of: login, users, roles, posts, comments and me.
 
-```javascript
-const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
+## Swagger
+
+To access the Swagger documentation, start the server and visit the roote:
+
+```
+http://localhost:3000/
 ```
 
-with the following:
+## Para el Revisor
 
-```javascript
-const dynamoDbClientParams = {};
-if (process.env.IS_OFFLINE) {
-  dynamoDbClientParams.region = 'localhost'
-  dynamoDbClientParams.endpoint = 'http://localhost:8000'
-}
-const dynamoDbClient = new AWS.DynamoDB.DocumentClient(dynamoDbClientParams);
-```
+Aquí se detallan todos los puntos solicitados en el reto técnico y su estado de realización:
 
-After that, running the following command with start both local API Gateway emulator as well as local instance of emulated DynamoDB:
+[Link Produccion](#https://9anke0cyv4.execute-api.us-west-2.amazonaws.com) https://9anke0cyv4.execute-api.us-west-2.amazonaws.com
 
-```bash
-serverless offline start
-```
+- [x] **Endpoints mínimos para el rol Personal**
+- [x] **Integración con una base de datos**: Se utilizó **DynamoDB**
+- [x] **Integración con JSONPlaceholder**
+- [x] **Uso del Serverless Framework**
+- [x] **Uso de Node.js con Javascript**
+- [x] **Uso de ORM**: Se empleó **dynamoose** como ORM para DynamoDB.
+- [x] **Respeto de las buenas prácticas de desarrollo**
+- [x] **Uso de patrones de diseño**: Se implementaron los patrones **MVC** y **Factory**
+- [x] **JWT para Autenticación**
+- [x] **Autorización basada en roles usando middleware**
+- [x] **Pruebas unitarias** 16 Tests para todos los EndPoints `npm test`
+- [x] **Documentación con Open API/Swagger**
+- [x] **Despliegue sin errores en AWS** `npm run deploy:prod`
+- [x] **Creación de tablas**: Se crearon las tablas **Users**, **Roles**, y **Counters** para autoincremento de IDs.
 
-To learn more about the capabilities of `serverless-offline` and `serverless-dynamodb-local`, please refer to their corresponding GitHub repositories:
-- https://github.com/dherault/serverless-offline
-- https://github.com/99x/serverless-dynamodb-local
+Espero que esta documentación facilite la revisión y evaluación del proyecto. Quedo a disposición para cualquier consulta o aclaración.
